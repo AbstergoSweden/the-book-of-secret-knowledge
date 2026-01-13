@@ -93,16 +93,31 @@ The repository has been organized into a clear directory structure for better na
 ```
 the-book-of-secret-knowledge/
 ├── README.md                    # Main documentation (this file)
-├── shell-functions/            # Organized collection of shell functions
-│   ├── network-functions.sh   # Network utilities
-│   ├── system-functions.sh    # System administration
-│   ├── file-functions.sh      # File operations
-│   ├── git-functions.sh       # Git helpers
-│   ├── docker-functions.sh    # Docker utilities
-│   └── security-functions.sh  # Security auditing
+├── install-functions.sh         # Easy installation script for shell functions
+├── shell-functions/            # 80+ organized shell functions
+│   ├── README.md               # Complete function documentation
+│   ├── network-functions.sh   # Network utilities (DNS, ports, IPs)
+│   ├── system-functions.sh    # System administration (monitoring, processes)
+│   ├── file-functions.sh      # File operations (search, backup, archive)
+│   ├── git-functions.sh       # Git helpers (branches, logs, stats)
+│   ├── docker-functions.sh    # Docker utilities (containers, images)
+│   └── security-functions.sh  # Security auditing (scans, reports)
 ├── docs/                       # Documentation and guides
-└── cheatsheets/               # Quick reference materials
+│   └── STRUCTURE.md            # Detailed repository organization
+└── cheatsheets/               # Quick reference materials (planned)
 ```
+
+### Quick Start: Using Shell Functions
+
+```bash
+# Easy installation with the provided script
+./install-functions.sh
+
+# Or manually source functions
+for file in shell-functions/*.sh; do source "$file"; done
+```
+
+**See [shell-functions/README.md](shell-functions/README.md) for complete function documentation.**
 
 **See [docs/STRUCTURE.md](docs/STRUCTURE.md) for detailed repository organization.**
 
