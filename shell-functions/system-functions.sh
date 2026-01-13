@@ -169,16 +169,33 @@ function CheckLoad() {
   local _threshold="${1:-80}"
   local _cpus=$(nproc)
   local _load=$(cat /proc/loadavg | cut -d' ' -f1)
-  local _load_pct=$(echo "scale=2; $_load / $_cpus * 100" | bc)
 
-  echo "Current load: $_load (${_load_pct}% on $_cpus cores)"
-  
-  if (( $(echo "$_load_pct > $_threshold" | bc -l) )); then
-    echo "⚠ WARNING: High system load!"
-    return 1
+  if ! command -v bc &> /dev/null; then
+    # Fallback calculation without bc
+    local _load_int=$(echo "$_load" | cut -d'.' -f1)
+    local _threshold_calc=$(( (_load_int * 100) / _cpus ))
+    
+    echo "Current load: $_load ($_threshold_calc% on $_cpus cores - approximate)"
+    
+    if (( _threshold_calc > _threshold )); then
+      echo "⚠ WARNING: High system load!"
+      return 1
+    else
+      echo "✓ System load is normal"
+      return 0
+    fi
   else
-    echo "✓ System load is normal"
-    return 0
+    local _load_pct=$(echo "scale=2; $_load / $_cpus * 100" | bc)
+    
+    echo "Current load: $_load (${_load_pct}% on $_cpus cores)"
+    
+    if (( $(echo "$_load_pct > $_threshold" | bc -l) )); then
+      echo "⚠ WARNING: High system load!"
+      return 1
+    else
+      echo "✓ System load is normal"
+      return 0
+    fi
   fi
 }
 

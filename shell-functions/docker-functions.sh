@@ -16,7 +16,7 @@ function DockerStopAll() {
     return 0
   fi
 
-  docker stop $(_containers)
+  docker stop $_containers
   echo "All containers stopped"
 }
 
@@ -212,14 +212,19 @@ function DockerInfo() {
     return 1
   fi
 
-  docker inspect "$_container" | jq '.[0] | {
-    Name: .Name,
-    State: .State.Status,
-    Image: .Config.Image,
-    IPAddress: .NetworkSettings.IPAddress,
-    Ports: .NetworkSettings.Ports,
-    Mounts: .Mounts
-  }'
+  if command -v jq &> /dev/null; then
+    docker inspect "$_container" | jq '.[0] | {
+      Name: .Name,
+      State: .State.Status,
+      Image: .Config.Image,
+      IPAddress: .NetworkSettings.IPAddress,
+      Ports: .NetworkSettings.Ports,
+      Mounts: .Mounts
+    }'
+  else
+    echo "Container information for: $_container"
+    docker inspect "$_container"
+  fi
 }
 
 #######################################

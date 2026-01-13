@@ -39,7 +39,7 @@ function GetASN() {
   local _curl_base="curl --request GET"
   local _timeout="15"
 
-  _asn=$($_curl_base -ks -m "$_timeout" "http://ip-api.com/line/${_ip}?fields=as")
+  _asn=$($_curl_base -ks -m "$_timeout" "https://ip-api.com/line/${_ip}?fields=as")
   _state=$(echo $?)
 
   if [[ -z "$_ip" ]] || [[ "$_ip" == "null" ]] || [[ "$_state" -ne 0 ]]; then
