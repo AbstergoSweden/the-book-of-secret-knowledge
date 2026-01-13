@@ -87,7 +87,7 @@ function BulkRename() {
   fi
 
   # Escape characters in the search pattern that are special in sed regex and as delimiters
-  _search_escaped=$(printf '%s\n' "$_search" | sed 's/[.[\*^$&/\\]/\\&/g')
+  _search_escaped=$(printf '%s\n' "$_search" | sed 's/[.\\[\*^$&/]/\\&/g')
   # Escape characters in the replacement pattern that are special in sed replacements and as delimiters
   _replace_escaped=$(printf '%s\n' "$_replace" | sed 's/[&/\\]/\\&/g')
 

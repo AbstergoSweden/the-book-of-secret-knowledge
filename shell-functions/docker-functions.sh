@@ -113,7 +113,7 @@ function DockerCleanDangling() {
   fi
 
   echo "Removing dangling images..."
-  if docker rmi $_dangling_images 2>/dev/null; then
+  if docker rmi "$_dangling_images" 2>/dev/null; then
     echo "Dangling images removed"
   else
     echo "Failed to remove some dangling images"
