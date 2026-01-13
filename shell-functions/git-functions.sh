@@ -167,7 +167,7 @@ function GitCleanup() {
   read -p "Delete these branches? (y/n) " -n 1 -r
   echo
   if [[ $REPLY =~ ^[Yy]$ ]]; then
-    git branch --merged | grep -v "\*" | grep -v "main" | grep -v "master" | xargs -n 1 git branch -d
+    git branch --merged | grep -v "\*" | grep -v "main" | grep -v "master" | xargs -r -n 1 git branch -d
   fi
 }
 

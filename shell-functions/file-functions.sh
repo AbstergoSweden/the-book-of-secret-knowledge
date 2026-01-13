@@ -78,16 +78,24 @@ function BulkRename() {
   local _search="$1"
   local _replace="$2"
   local _dir="${3:-.}"
+  local _search_escaped
+  local _replace_escaped
 
   if [[ -z "$_search" ]] || [[ -z "$_replace" ]]; then
     echo "Usage: BulkRename <search-pattern> <replace-pattern> [directory]"
     return 1
   fi
 
+  # Escape characters in the search pattern that are special in sed regex and as delimiters
+  _search_escaped=$(printf '%s\n' "$_search" | sed 's/[.[\*^$&/\\]/\\&/g')
+  # Escape characters in the replacement pattern that are special in sed replacements and as delimiters
+  _replace_escaped=$(printf '%s\n' "$_replace" | sed 's/[&/\\]/\\&/g')
+
   echo "Renaming files in $_dir (replacing '$_search' with '$_replace'):"
   
   find "$_dir" -maxdepth 1 -type f -name "*${_search}*" | while read -r file; do
-    local newname=$(echo "$file" | sed "s/${_search}/${_replace}/")
+    local newname
+    newname=$(echo "$file" | sed "s/${_search_escaped}/${_replace_escaped}/")
     if [[ "$file" != "$newname" ]]; then
       echo "$file -> $newname"
       mv "$file" "$newname"
@@ -211,7 +219,7 @@ function CountByExtension() {
   local _dir="${1:-.}"
 
   echo "File count by extension in $_dir:"
-  find "$_dir" -type f | sed 's/.*\.//' | sort | uniq -c | sort -rn
+  find "$_dir" -type f | awk -F/ '{ fn = $NF; if (fn ~ /\./) { sub(/.*\./, "", fn); print fn } }' | sort | uniq -c | sort -rn
 }
 
 #######################################

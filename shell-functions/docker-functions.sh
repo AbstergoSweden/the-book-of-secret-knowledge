@@ -104,13 +104,20 @@ function DockerImages() {
 #   Removal status
 #######################################
 function DockerCleanDangling() {
+  local _dangling_images
+  _dangling_images=$(docker images -f "dangling=true" -q)
+
+  if [[ -z "$_dangling_images" ]]; then
+    echo "No dangling images found"
+    return 0
+  fi
+
   echo "Removing dangling images..."
-  docker rmi $(docker images -f "dangling=true" -q) 2>/dev/null
-  
-  if [[ $? -eq 0 ]]; then
+  if docker rmi $_dangling_images 2>/dev/null; then
     echo "Dangling images removed"
   else
-    echo "No dangling images found"
+    echo "Failed to remove some dangling images"
+    return 1
   fi
 }
 
@@ -170,7 +177,7 @@ function DockerWatch() {
 #   Container names and IP addresses
 #######################################
 function DockerIPs() {
-  docker ps -q | xargs -n 1 docker inspect --format '{{.Name}} - {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' | sed 's/\// /'
+  docker ps -q | xargs -n 1 docker inspect --format '{{.Name}} - {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' | sed 's/^\///'
 }
 
 #######################################
@@ -191,10 +198,17 @@ function DockerDiff() {
   fi
 
   echo "=== Comparing $_image1 and $_image2 ==="
-  docker history "$_image1" > /tmp/img1.txt
-  docker history "$_image2" > /tmp/img2.txt
-  diff /tmp/img1.txt /tmp/img2.txt
-  rm -f /tmp/img1.txt /tmp/img2.txt
+  
+  local _tmp1
+  local _tmp2
+
+  _tmp1=$(mktemp) || { echo "Error: failed to create temporary file for $_image1" >&2; return 1; }
+  _tmp2=$(mktemp) || { echo "Error: failed to create temporary file for $_image2" >&2; rm -f "$_tmp1"; return 1; }
+
+  docker history "$_image1" > "$_tmp1"
+  docker history "$_image2" > "$_tmp2"
+  diff "$_tmp1" "$_tmp2"
+  rm -f "$_tmp1" "$_tmp2"
 }
 
 #######################################

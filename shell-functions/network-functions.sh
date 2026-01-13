@@ -77,7 +77,7 @@ function CheckPort() {
     fi
   else
     # Fallback to bash's /dev/tcp
-    if timeout 2 bash -c "cat < /dev/null > /dev/tcp/$_host/$_port" 2>/dev/null; then
+    if timeout 2 bash -c 'cat < /dev/null > /dev/tcp/$1/$2' _ "$_host" "$_port" 2>/dev/null; then
       echo "Port $_port on $_host is OPEN"
       return 0
     else

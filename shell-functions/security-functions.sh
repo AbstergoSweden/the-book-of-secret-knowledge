@@ -42,7 +42,7 @@ function FindOrphaned() {
   local _dir="${1:-/}"
 
   echo "Files without valid owner in $_dir:"
-  find "$_dir" -nouser -o -nogroup 2>/dev/null
+  find "$_dir" \( -nouser -o -nogroup \) 2>/dev/null
 }
 
 #######################################
@@ -103,7 +103,7 @@ function CheckEmptyPasswords() {
   fi
 
   echo "Users with empty passwords:"
-  awk -F: '($2 == "" || $2 == "!") {print $1}' /etc/shadow
+  awk -F: '($2 == "") {print $1}' /etc/shadow
 }
 
 #######################################

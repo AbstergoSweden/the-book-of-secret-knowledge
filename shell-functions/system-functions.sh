@@ -74,7 +74,7 @@ function ProcessMemory() {
     ps -p "$_process" -o pid,vsz,rss,comm | awk 'NR==1 {print $0} NR>1 {printf "%s\t%sMB\t%sMB\t%s\n", $1, $2/1024, $3/1024, $4}'
   else
     # It's a process name
-    ps aux | grep -i "$_process" | grep -v grep | awk '{printf "PID: %s\tVSZ: %sMB\tRSS: %sMB\tCMD: %s\n", $2, $5/1024, $6/1024, $11}'
+    ps -eo pid,vsz,rss,comm | awk -v pat="$_process" 'NR==1 {print $0; next} tolower($4) ~ tolower(pat) {printf "%s\t%sMB\t%sMB\t%s\n", $1, $2/1024, $3/1024, $4}'
   fi
 }
 
@@ -171,11 +171,11 @@ function CheckLoad() {
   local _load=$(cat /proc/loadavg | cut -d' ' -f1)
 
   if ! command -v bc &> /dev/null; then
-    # Fallback calculation without bc
-    local _load_int=$(echo "$_load" | cut -d'.' -f1)
-    local _threshold_calc=$(( (_load_int * 100) / _cpus ))
+    # Fallback calculation without bc (use awk for floating-point arithmetic)
+    local _threshold_calc
+    _threshold_calc=$(awk -v load="$_load" -v cpus="$_cpus" 'BEGIN { printf "%.0f", (load / cpus) * 100 }')
     
-    echo "Current load: $_load ($_threshold_calc% on $_cpus cores - approximate)"
+    echo "Current load: $_load (${_threshold_calc}% on $_cpus cores - approximate)"
     
     if (( _threshold_calc > _threshold )); then
       echo "⚠ WARNING: High system load!"
