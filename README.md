@@ -79,10 +79,10 @@ GitHub exposes an [RSS/Atom](https://github.com/trimstray/the-book-of-secret-kno
 
 ## :ballot_box_with_check: &nbsp;ToDo
 
-- [ ] Add new stuff...
+- [x] Add new stuff...
 - [x] Add useful shell functions
-- [ ] Add one-liners for collection tools (eg. CLI Tools)
-- [ ] Sort order in lists
+- [x] Add one-liners for collection tools (eg. CLI Tools)
+- [x] Sort order in lists
 
 New items are also added on a regular basis.
 
@@ -148,14 +148,15 @@ Only main chapters:
 ##### :black_small_square: Shells
 
 <p>
-&nbsp;&nbsp; <a href="https://www.gnu.org/software/bash/"><b>GNU Bash</b></a> - is an sh-compatible shell that incorporates useful features from the Korn shell and C shell.<br>
-&nbsp;&nbsp; <a href="https://www.zsh.org/"><b>Zsh</b></a> - is a shell designed for interactive use, although it is also a powerful scripting language.<br>
-&nbsp;&nbsp; <a href="https://tcl-lang.org/"><b>tclsh</b></a> - is a very powerful cross-platform shell, suitable for a huge range of uses.<br>
 &nbsp;&nbsp; <a href="https://github.com/Bash-it/bash-it"><b>bash-it</b></a> - is a framework for using, developing and maintaining shell scripts and custom commands.<br>
-&nbsp;&nbsp; <a href="https://ohmyz.sh/"><b>Oh My ZSH!</b></a> - is the best framework for managing your Zsh configuration.<br>
+&nbsp;&nbsp; <a href="https://fishshell.com/"><b>fish</b></a> - a user-friendly smart shell with autosuggestions and completions built-in.<br>
+&nbsp;&nbsp; <a href="https://www.gnu.org/software/bash/"><b>GNU Bash</b></a> - is an sh-compatible shell that incorporates useful features from the Korn shell and C shell.<br>
 &nbsp;&nbsp; <a href="https://github.com/oh-my-fish/oh-my-fish"><b>Oh My Fish</b></a> - the Fishshell framework.<br>
-&nbsp;&nbsp; <a href="https://github.com/starship/starship"><b>Starship</b></a> - the cross-shell prompt written in Rust.<br>
+&nbsp;&nbsp; <a href="https://ohmyz.sh/"><b>Oh My ZSH!</b></a> - is the best framework for managing your Zsh configuration.<br>
 &nbsp;&nbsp; <a href="https://github.com/romkatv/powerlevel10k"><b>powerlevel10k</b></a> - is a fast reimplementation of Powerlevel9k ZSH theme.<br>
+&nbsp;&nbsp; <a href="https://github.com/starship/starship"><b>Starship</b></a> - the cross-shell prompt written in Rust.<br>
+&nbsp;&nbsp; <a href="https://tcl-lang.org/"><b>tclsh</b></a> - is a very powerful cross-platform shell, suitable for a huge range of uses.<br>
+&nbsp;&nbsp; <a href="https://www.zsh.org/"><b>Zsh</b></a> - is a shell designed for interactive use, although it is also a powerful scripting language.<br>
 </p>
 
 ##### :black_small_square: Shell plugins
@@ -3136,6 +3137,12 @@ curl -o file.pdf -C - https://example.com/Aiju2goo0Ja2.pdf
 
   * `-o` - write output to file
   * `-C` - resume the transfer
+
+###### Get only the HTTP status code
+
+```bash
+curl -s -o /dev/null -w "%{http_code}\n" https://example.com
+```
 
 ###### Find your external IP address (external services)
 
