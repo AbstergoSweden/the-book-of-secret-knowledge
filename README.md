@@ -80,11 +80,31 @@ GitHub exposes an [RSS/Atom](https://github.com/trimstray/the-book-of-secret-kno
 ## :ballot_box_with_check: &nbsp;ToDo
 
 - [ ] Add new stuff...
-- [ ] Add useful shell functions
+- [x] Add useful shell functions
 - [ ] Add one-liners for collection tools (eg. CLI Tools)
 - [ ] Sort order in lists
 
 New items are also added on a regular basis.
+
+## :file_folder: &nbsp;Repository Structure
+
+The repository has been organized into a clear directory structure for better navigation:
+
+```
+the-book-of-secret-knowledge/
+├── README.md                    # Main documentation (this file)
+├── shell-functions/            # Organized collection of shell functions
+│   ├── network-functions.sh   # Network utilities
+│   ├── system-functions.sh    # System administration
+│   ├── file-functions.sh      # File operations
+│   ├── git-functions.sh       # Git helpers
+│   ├── docker-functions.sh    # Docker utilities
+│   └── security-functions.sh  # Security auditing
+├── docs/                       # Documentation and guides
+└── cheatsheets/               # Quick reference materials
+```
+
+**See [docs/STRUCTURE.md](docs/STRUCTURE.md) for detailed repository organization.**
 
 ## :anger: &nbsp;Table of Contents
 
@@ -4355,6 +4375,31 @@ When you get a shell, it is generally not very clean, but after following these 
 6) `export TERM=xterm; export SHELL=bash`
 
 #### Shell functions &nbsp;[<sup>[TOC]</sup>](#anger-table-of-contents)
+
+> :star: **NEW: Comprehensive shell functions library now available in the [`shell-functions/`](shell-functions/) directory!**
+>
+> The shell functions have been reorganized into categorized files with over 80+ useful functions covering:
+> - **Network Functions** - DNS, port checking, IP lookup, HTTP status checks
+> - **System Functions** - Process management, monitoring, disk usage analysis  
+> - **File Functions** - Search, bulk operations, archiving, duplicate detection
+> - **Git Functions** - Workflow helpers, branch management, repository stats
+> - **Docker Functions** - Container management, resource monitoring, cleanup
+> - **Security Functions** - Security audits, permission checks, vulnerability scanning
+>
+> **[📖 View Complete Documentation](shell-functions/README.md)**
+
+##### Quick Start
+
+```bash
+# Source all functions
+for file in shell-functions/*.sh; do source "$file"; done
+
+# Or add to your ~/.bashrc or ~/.zshrc
+```
+
+##### Legacy Examples
+
+Below are the original examples. For the complete collection with 80+ functions, see [shell-functions/](shell-functions/).
 
 ##### Table of Contents
 
