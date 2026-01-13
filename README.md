@@ -3144,6 +3144,9 @@ curl -o file.pdf -C - https://example.com/Aiju2goo0Ja2.pdf
 curl -s -o /dev/null -w "%{http_code}\n" https://example.com
 ```
 
+  * `-s` - silent mode (not display progress bar)
+  * `-o /dev/null` - discard response body
+  * `-w "%{http_code}\n"` - write out the HTTP status code
 ###### Find your external IP address (external services)
 
 ```bash
