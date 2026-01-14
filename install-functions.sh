@@ -76,16 +76,35 @@ case $choice in
             fi
         fi
 
-        # Add to RC file
-        echo "" >> "$RC_FILE"
-        echo "# Shell functions from the-book-of-secret-knowledge" >> "$RC_FILE"
-        echo "# Added on $(date)" >> "$RC_FILE"
-        echo "if [ -d \"$SHELL_FUNCTIONS_DIR\" ]; then" >> "$RC_FILE"
-        echo "  for func_file in \"$SHELL_FUNCTIONS_DIR\"/*.sh; do" >> "$RC_FILE"
-        echo "    [ -f \"\$func_file\" ] && source \"\$func_file\"" >> "$RC_FILE"
-        echo "  done" >> "$RC_FILE"
-        echo "fi" >> "$RC_FILE"
+        # Remove any existing shell-functions block to avoid duplicates
+        if [ -f "$RC_FILE" ]; then
+            tmp_rc_file="${RC_FILE}.tmp.$$"
+            awk '
+                BEGIN { skip = 0 }
+                $0 == "# Shell functions from the-book-of-secret-knowledge" {
+                    skip = 1
+                    next
+                }
+                skip && /^fi$/ {
+                    skip = 0
+                    next
+                }
+                skip { next }
+                { print }
+            ' "$RC_FILE" > "$tmp_rc_file" && mv "$tmp_rc_file" "$RC_FILE"
+        fi
 
+        # Add to RC file
+        cat >> "$RC_FILE" <<EOF
+
+# Shell functions from the-book-of-secret-knowledge
+# Added on $(date)
+if [ -d "$SHELL_FUNCTIONS_DIR" ]; then
+  for func_file in "$SHELL_FUNCTIONS_DIR"/*.sh; do
+    [ -f "\$func_file" ] && source "\$func_file"
+  done
+fi
+EOF
         echo ""
         echo "✓ Successfully added to $RC_FILE"
         echo ""
